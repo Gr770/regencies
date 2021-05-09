@@ -1,0 +1,91 @@
+﻿regency_pool = {
+	valid_character = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		OR = {
+			is_vassal_of = scope:base.liege
+			has_relation_guardian = scope:base.liege
+			AND = {
+				exists = scope:base.liege.mother
+				root = scope:base.liege.mother
+			}
+			AND = {
+				exists = scope:base.liege.father
+				root = scope:base.liege.father
+			}
+			AND = {
+				exists = scope:base.liege.primary_spouse
+				root = scope:base.liege.primary_spouse
+			}
+		}
+	}
+
+	character_score = {
+		base = 1
+
+		modifier = {
+			add = {
+				value = diplomacy
+				subtract = average_skill_rating
+				max = high_skill_rating
+			}
+		}
+		modifier = {
+			add = {
+				value = martial
+				subtract = average_skill_rating
+				max = high_skill_rating
+			}
+		}
+		modifier = {
+			add = {
+				value = stewardship
+				subtract = average_skill_rating
+				max = high_skill_rating
+			}
+		}
+		modifier = {
+			add = {
+				value = intrigue
+				subtract = average_skill_rating
+				max = high_skill_rating
+				multiply = 2
+			}
+		}
+		modifier = {
+			add = {
+				value = learning
+				subtract = average_skill_rating
+				max = high_skill_rating
+			}
+		}
+		modifier = {
+			add = {
+				value = highest_held_title_tier
+			}
+		}
+		modifier = {
+			add = 50
+			OR = {
+				AND = {
+					exists = scope:base.liege.mother
+					root = scope:base.liege.mother
+				}
+				AND = {
+					exists = scope:base.liege.father
+					root = scope:base.liege.father
+				}
+				AND = {
+					exists = scope:base.liege.primary_spouse
+					root = scope:base.liege.primary_spouse
+				}
+			}
+		}
+	}
+
+	config = {
+		age = { 16 100 }
+	}
+
+	selection_count = -1
+}

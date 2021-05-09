@@ -1,0 +1,125 @@
+﻿namespace = regency
+
+regency.001 = {
+	type = character_event
+	hidden = yes
+	trigger = {
+		has_government = feudal_government
+		OR = {
+			age < 16
+			AND = {
+				is_male = no
+				OR = {
+					has_realm_law = male_only_law #shouldn't happen
+					has_realm_law = male_preference_law
+				}
+			}
+			AND = {
+				is_male = yes
+				OR = {
+					has_realm_law = female_only_law #shouldn't happen
+					has_realm_law = female_preference_law
+				}
+			}
+		}
+		NOT = {
+			has_character_flag = regent_assigned
+		}
+	}
+	immediate = {
+		save_scope_as = invalid_ruler
+		hidden_effect = {
+			if = {
+				limit = {
+					exists = father
+					father = {
+						is_alive = yes
+					}
+				}
+				set_variable = { name = assigned_regent value = father }
+				father = {
+					if = {
+						limit = {
+							is_ruler = no
+						}
+						set_employer = scope:invalid_ruler
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					exists = mother
+					mother = {
+						is_alive = yes
+					}
+				}
+				set_variable = { name = assigned_regent value = mother }
+				mother = {
+					IF = {
+						limit = {
+							is_ruler = no
+						}
+						set_employer = scope:invalid_ruler
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					num_of_relation_guardian = 1
+				}
+				every_relation = {
+					limit = {
+						has_relation_ward = scope:invalid_ruler
+					}
+					save_scope_as = guardian_regent
+				}
+				set_variable = { name = assigned_regent value = scope:guardian_regent }
+			}
+			else_if = {
+				limit = {
+					number_of_powerful_vassals >= 1
+					any_vassal = {
+						is_powerful_vassal = yes
+						has_government = feudal_government
+					}
+				}
+				random_vassal = {
+					limit = {
+						is_powerful_vassal = yes
+					}
+					save_scope_as = powerful_vassal_regent
+				}
+				set_variable = { name = assigned_regent value = scope:powerful_vassal_regent }
+			}
+			else_if = {
+				limit = {
+					vassal_count >= 1
+					any_vassal = {
+						has_government = feudal_government
+					}
+				}
+				random_vassal = {
+					save_scope_as = vassal_regent
+				}
+				set_variable = { name = assigned_regent value = scope:vassal_regent }
+			}
+			else = {
+				random_courtier = {
+					save_scope_as = courtier_regent
+				}
+				set_variable = { name = assigned_regent value = scope:courtier_regent }
+			}
+			if = {
+				limit = {
+					has_variable = assigned_regent
+				}
+				random_in_list = {
+					limit = { is_alive = yes }
+					variable = assigned_regent
+					add_character_flag = is_assigned_regent
+				}
+				add_character_flag = regent_assigned
+			}
+		}
+	}
+}

@@ -1,0 +1,15 @@
+﻿on_title_gain_inheritance = {
+	on_actions = {
+		on_regency_assign
+	}
+}
+on_game_start = {
+	on_actions = {
+		on_regency_assign
+	}
+}
+on_regency_assign = {
+	events = {
+		regency.001
+	}
+}

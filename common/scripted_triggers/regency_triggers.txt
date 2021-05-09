@@ -1,0 +1,17 @@
+﻿can_be_spouse_or_regent_trigger = {
+	save_temporary_scope_as = regent_councilor_check
+	can_be_councillor_basics_trigger = yes
+	trigger_if = {
+		limit = { $COUNCIL_OWNER$ = { exists = primary_spouse } }
+		$COUNCIL_OWNER$ = { primary_spouse = scope:regent_councilor_check }
+	}
+	trigger_else = {
+		has_character_flag = is_assigned_regent
+		$COUNCIL_OWNER$ = {
+			any_in_list = {
+				variable = assigned_regent
+				this = root
+			}
+		}
+	}
+}
