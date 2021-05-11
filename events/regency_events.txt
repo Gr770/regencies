@@ -22,103 +22,44 @@ regency.001 = {
 				}
 			}
 		}
-		NOT = {
-			has_character_flag = regent_assigned
-		}
 	}
 	immediate = {
 		save_scope_as = invalid_ruler
 		hidden_effect = {
-			if = {
-				limit = {
-					exists = father
-					father = {
-						is_alive = yes
-					}
-				}
-				set_variable = { name = assigned_regent value = father }
-				father = {
-					if = {
-						limit = {
-							is_ruler = no
-						}
-						set_employer = scope:invalid_ruler
-					}
-				}
+			remove_character_flag = regent_assigned
+			every_parent = {
+				limit = {is_alive = yes}
+				add_to_list = regent_candidates
 			}
-			else_if = {
-				limit = {
-					exists = mother
-					mother = {
-						is_alive = yes
-					}
-				}
-				set_variable = { name = assigned_regent value = mother }
-				mother = {
-					IF = {
-						limit = {
-							is_ruler = no
-						}
-						set_employer = scope:invalid_ruler
-					}
-				}
+			every_vassal = {
+				add_to_list = regent_candidates
 			}
-			else_if = {
-				limit = {
-					num_of_relation_guardian = 1
-				}
-				every_relation = {
-					limit = {
-						has_relation_ward = scope:invalid_ruler
-					}
-					save_scope_as = guardian_regent
-				}
-				set_variable = { name = assigned_regent value = scope:guardian_regent }
+			every_coutier = {
+				add_to_list = regent_candidates
 			}
-			else_if = {
-				limit = {
-					number_of_powerful_vassals >= 1
-					any_vassal = {
-						is_powerful_vassal = yes
-						has_government = feudal_government
-					}
-				}
-				random_vassal = {
-					limit = {
-						is_powerful_vassal = yes
-					}
-					save_scope_as = powerful_vassal_regent
-				}
-				set_variable = { name = assigned_regent value = scope:powerful_vassal_regent }
+			random_in_list = {
+				list = regent_candidates
+				limit = {has_relation_guardian = scope:invalid_ruler}
+				alternative_limit = {is_parent_of = scope:invalid_ruler}
+				alternative_limit = {is_powerful_vassal_of = scope:invalid_ruler}
+				alternative_limit = {is_vassal_of = scope:invalid_ruler}
+				alternative_limit = {is_coutier_of = scope:invalid_ruler}
+				add_character_flag = is_assigned_regent
+				clear_variable_list = regent_assigned_to
+				add_to_variable_list = {name = regent_assigned_to target = scope:invalid_ruler}
 			}
-			else_if = {
-				limit = {
-					vassal_count >= 1
-					any_vassal = {
-						has_government = feudal_government
-					}
-				}
-				random_vassal = {
-					save_scope_as = vassal_regent
-				}
-				set_variable = { name = assigned_regent value = scope:vassal_regent }
-			}
-			else = {
-				random_courtier = {
-					save_scope_as = courtier_regent
-				}
-				set_variable = { name = assigned_regent value = scope:courtier_regent }
-			}
-			if = {
-				limit = {
-					has_variable = assigned_regent
-				}
-				random_in_list = {
-					limit = { is_alive = yes }
-					variable = assigned_regent
-					add_character_flag = is_assigned_regent
-				}
-				add_character_flag = regent_assigned
+			add_character_flag = regent_assigned
+		}
+	}
+}
+regency.002 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		hidden_effect = {
+			every_in_list = {
+				variable = regent_assigned_to
+				trigger_event = regency.001
 			}
 		}
 	}

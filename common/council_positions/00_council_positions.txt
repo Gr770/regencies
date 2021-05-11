@@ -2297,6 +2297,13 @@ councillor_spouse = {
 							has_realm_law = male_preference_law
 						}
 					}
+					AND = {
+						is_male = yes
+						OR = {
+							has_realm_law = female_only_law #shouldn't happen
+							has_realm_law = female_preference_law
+						}
+					}
 				}
 			}
 		}

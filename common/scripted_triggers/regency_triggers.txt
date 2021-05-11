@@ -2,16 +2,28 @@
 	save_temporary_scope_as = regent_councilor_check
 	can_be_councillor_basics_trigger = yes
 	trigger_if = {
-		limit = { $COUNCIL_OWNER$ = { exists = primary_spouse } }
-		$COUNCIL_OWNER$ = { primary_spouse = scope:regent_councilor_check }
+		limit = { $COUNCIL_OWNER$  = {exists = primary_spouse} }
+		trigger_if = {
+			limit = { is_ruler = yes }
+			exists = liege
+			liege = $COUNCIL_OWNER$
+			$COUNCIL_OWNER$ = { primary_spouse = scope:regent_councilor_check }
+		}
+		trigger_else = {
+			exists = $COUNCIL_OWNER$
+			$COUNCIL_OWNER$ = { primary_spouse = scope:regent_councilor_check }
+		}
 	}
 	trigger_else = {
-		has_character_flag = is_assigned_regent
-		$COUNCIL_OWNER$ = {
-			any_in_list = {
-				variable = assigned_regent
-				this = root
-			}
+		trigger_if = {
+			limit = { is_ruler = yes }
+			exists = liege
+			liege = $COUNCIL_OWNER$
+		}
+		has_character_flag = assigned_regent
+		any_in_list = {
+			variable = regent_assigned_to
+			this = $COUNCIL_OWNER$
 		}
 	}
 }
