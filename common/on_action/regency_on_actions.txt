@@ -4,8 +4,10 @@
 	}
 }
 on_regency_assign = {
-	NOT = {
-		has_character_flag = regent_assigned
+	trigger = {
+		NOT = {
+			has_character_flag = regent_assigned
+		}
 	}
 	events = {
 		regency.001

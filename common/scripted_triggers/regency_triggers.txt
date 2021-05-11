@@ -16,23 +16,10 @@
 	}
 	trigger_else_if = {
 		limit = { $COUNCIL_OWNER$ = {has_character_flag = regent_assigned} }
-		trigger_if = {
-			limit = { is_ruler = yes }
-			exists = liege
-			liege = $COUNCIL_OWNER$
-			has_character_flag = is_assigned_regent
-			any_in_list = {
-				variable = regent_assigned_to
-				this = $COUNCIL_OWNER$
-			}
-		}
-		trigger_else = {
-			exists = $COUNCIL_OWNER$
-			has_character_flag = is_assigned_regent
-			any_in_list = {
-				variable = regent_assigned_to
-				this = $COUNCIL_OWNER$
-			}
+		exists = $COUNCIL_OWNER$
+		has_character_flag = is_assigned_regent
+		var:regent_assigned_to = {
+			this = $COUNCIL_OWNER$
 		}
 	}
 	trigger_else = {
