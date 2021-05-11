@@ -2289,6 +2289,8 @@ councillor_spouse = {
 			AND = {
 				has_government = feudal_government
 				OR = {
+					is_capable_adult = no
+					is_imprisoned = yes
 					age < 16
 					AND = {
 						is_male = no
