@@ -9,44 +9,23 @@ regency.001 = {
 	immediate = {
 		save_scope_as = invalid_ruler
 		hidden_effect = {
-			if = {
-				limit = {has_character_flag = regent_assigned}
-				remove_character_flag = regent_assigned
-			}
 			every_parent = {
 				limit = {is_alive = yes}
 				add_to_list = regent_candidates
 			}
 			every_vassal = {
+				limit = { 
+					age > 16 
+					has_government = feudal_government
+				}
 				add_to_list = regent_candidates
 			}
 			every_courtier = {
+				limit = { age > 16 }
 				add_to_list = regent_candidates
 			}
 			every_heir = {
-				limit = {
-					NOR = {
-						age < 16
-						AND = {
-							is_male = no
-							scope:invalid_ruler = {
-								OR = {
-									has_realm_law = male_only_law #shouldn't happen
-									has_realm_law = male_preference_law
-								}
-							}
-						}
-						AND = {
-							is_male = yes
-							scope:invalid_ruler = {
-								OR = {
-									has_realm_law = female_only_law #shouldn't happen
-									has_realm_law = female_preference_law
-								}
-							}
-						}
-					}
-				}
+				limit = { age > 16 }
 				if = {
 					limit = {
 						is_ruler = yes
@@ -70,13 +49,18 @@ regency.001 = {
 				alternative_limit = {is_courtier_of = scope:invalid_ruler}
 				add_character_flag = is_assigned_regent
 				clear_variable_list = regent_assigned_to
-				add_to_variable_list = { name = regent_assigned_to target = scope:invalid_ruler }
+				set_variable = { name = regent_assigned_to value = scope:invalid_ruler }
 				if = {
 					limit = {scope:invalid_ruler = { age < 16 } }
 					set_relation_ward = scope:invalid_ruler
 				}
 				if = {
-					limit = {is_ruler = no}
+					limit = {
+						is_ruler = no
+						NOT = {
+							employer = scope:invalid_ruler
+						}
+					}
 					set_employer = scope:invalid_ruler
 				}
 			}
@@ -87,9 +71,12 @@ regency.001 = {
 regency.002 = {
 	hidden = yes
 	immediate = {
-		every_in_list = {
-			variable = regent_assigned_to
-			trigger_event = regency.001
+		var:regent_assigned_to = {
+			remove_character_flag = regent_assigned
+			trigger_event = {
+				id = regency.001
+				days = 1
+			}
 		}
 	}
 }
