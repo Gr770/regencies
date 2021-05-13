@@ -326,7 +326,7 @@ councillor_spouse = {
 	auto_fill = yes
 	can_fire = no
 	can_reassign = no
-	
+
 	name = {
 		first_valid = {
 			triggered_desc = {
@@ -2273,6 +2273,36 @@ councillor_spouse = {
 	}
 
 	tooltip = game_concept_spouse_desc
+
+	modifier = {
+		name = learn_on_the_job_modifier
+		learning = 1
+		scale = court_chaplain_regent_learn
+	}
+
+	modifier = {
+		name = learn_on_the_job_modifier
+		diplomacy = 1
+		scale = chancellor_regent_learn
+	}
+
+	modifier = {
+		name = learn_on_the_job_modifier
+		stewardship = 1
+		scale = steward_regent_learn
+	}
+
+	modifier = {
+		name = learn_on_the_job_modifier
+		martial = 1
+		scale = marshal_regent_learn
+	}
+
+	modifier = {
+		name = learn_on_the_job_modifier
+		intrigue = 1
+		scale = spymaster_regent_learn
+	}
 
 	valid_position = {
 		OR = {
